@@ -1,13 +1,13 @@
-package com.example.app;
+package com.example.restclientdemo.implementation;
 
 /**
- * Interface for request body specification.
- * Extends RequestHeadersSpec to provide body submission capabilities
- * while maintaining the header and URI configuration methods.
+ * Interface for request body specification. Extends RequestHeadersSpec to provide body submission
+ * capabilities while maintaining the header and URI configuration methods.
  */
 public interface RequestBodySpec extends RequestHeadersSpec<RequestBodySpec> {
     /**
      * Sets the body of the request
+     *
      * @param body The body to send with the request
      * @return this RequestBodySpec for method chaining
      */

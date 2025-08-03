@@ -1,0 +1,636 @@
+// pom.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.0</version>
+        <relativePath/>
+    </parent>
+    <groupId>com.example</groupId>
+    <artifactId>restclient-demo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>restclient-demo</name>
+    <description>Demo project for Spring Boot RestClient</description>
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
+// src/main/java/com/example/restclientdemo/RestClientDemoApplication.java
+package com.example.restclientdemo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class RestClientDemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(RestClientDemoApplication.class, args);
+    }
+}
+
+// src/main/java/com/example/restclientdemo/model/HttpBinResponse.java
+package com.example.restclientdemo.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class HttpBinResponse {
+    private String url;
+    private Map<String, String> headers;
+    private Map<String, Object> args;
+    private String data;
+    private Map<String, Object> json;
+    private Map<String, Object> form;
+    private String origin;
+    
+    @JsonProperty("user-agent")
+    private String userAgent;
+    
+    // Constructors
+    public HttpBinResponse() {}
+    
+    // Getters and Setters
+    public String getUrl() { return url; }
+    public void setUrl(String url) { this.url = url; }
+    
+    public Map<String, String> getHeaders() { return headers; }
+    public void setHeaders(Map<String, String> headers) { this.headers = headers; }
+    
+    public Map<String, Object> getArgs() { return args; }
+    public void setArgs(Map<String, Object> args) { this.args = args; }
+    
+    public String getData() { return data; }
+    public void setData(String data) { this.data = data; }
+    
+    public Map<String, Object> getJson() { return json; }
+    public void setJson(Map<String, Object> json) { this.json = json; }
+    
+    public Map<String, Object> getForm() { return form; }
+    public void setForm(Map<String, Object> form) { this.form = form; }
+    
+    public String getOrigin() { return origin; }
+    public void setOrigin(String origin) { this.origin = origin; }
+    
+    public String getUserAgent() { return userAgent; }
+    public void setUserAgent(String userAgent) { this.userAgent = userAgent; }
+    
+    @Override
+    public String toString() {
+        return "HttpBinResponse{" +
+                "url='" + url + '\'' +
+                ", headers=" + headers +
+                ", args=" + args +
+                ", data='" + data + '\'' +
+                ", json=" + json +
+                ", form=" + form +
+                ", origin='" + origin + '\'' +
+                ", userAgent='" + userAgent + '\'' +
+                '}';
+    }
+}
+
+// src/main/java/com/example/restclientdemo/model/User.java
+package com.example.restclientdemo.model;
+
+public class User {
+    private String name;
+    private String email;
+    private int age;
+    
+    public User() {}
+    
+    public User(String name, String email, int age) {
+        this.name = name;
+        this.email = email;
+        this.age = age;
+    }
+    
+    // Getters and Setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
+    
+    @Override
+    public String toString() {
+        return "User{name='" + name + "', email='" + email + "', age=" + age + "}";
+    }
+}
+
+// src/main/java/com/example/restclientdemo/config/RestClientConfig.java
+package com.example.restclientdemo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.web.client.RestClient;
+import java.time.Duration;
+
+@Configuration
+public class RestClientConfig {
+    
+    @Bean
+    public RestClient defaultRestClient() {
+        return RestClient.builder()
+                .baseUrl("https://httpbin.org")
+                .defaultHeader("User-Agent", "Spring-RestClient-Demo/1.0")
+                .defaultHeader("Accept", "application/json")
+                .requestInterceptor(loggingInterceptor())
+                .build();
+    }
+    
+    @Bean
+    public RestClient customRestClient() {
+        return RestClient.builder()
+                .baseUrl("https://httpbin.org")
+                .defaultHeader("Custom-Header", "Demo-Value")
+                .requestInterceptor(loggingInterceptor())
+                .build();
+    }
+    
+    private ClientHttpRequestInterceptor loggingInterceptor() {
+        return (request, body, execution) -> {
+            System.out.println("🚀 Making request to: " + request.getMethod() + " " + request.getURI());
+            System.out.println("📤 Headers: " + request.getHeaders());
+            if (body.length > 0) {
+                System.out.println("📄 Body: " + new String(body));
+            }
+            
+            var response = execution.execute(request, body);
+            
+            System.out.println("📥 Response Status: " + response.getStatusCode());
+            System.out.println("📋 Response Headers: " + response.getHeaders());
+            System.out.println("---");
+            
+            return response;
+        };
+    }
+}
+
+// src/main/java/com/example/restclientdemo/service/HttpBinService.java
+package com.example.restclientdemo.service;
+
+import com.example.restclientdemo.model.HttpBinResponse;
+import com.example.restclientdemo.model.User;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestClientResponseException;
+
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class HttpBinService {
+    
+    private final RestClient defaultRestClient;
+    private final RestClient customRestClient;
+    
+    public HttpBinService(@Qualifier("defaultRestClient") RestClient defaultRestClient,
+                         @Qualifier("customRestClient") RestClient customRestClient) {
+        this.defaultRestClient = defaultRestClient;
+        this.customRestClient = customRestClient;
+    }
+    
+    // GET Methods Demo
+    public HttpBinResponse simpleGet() {
+        System.out.println("\n=== Simple GET Request ===");
+        return defaultRestClient.get()
+                .uri("/get")
+                .retrieve()
+                .body(HttpBinResponse.class);
+    }
+    
+    public HttpBinResponse getWithQueryParams() {
+        System.out.println("\n=== GET with Query Parameters ===");
+        return defaultRestClient.get()
+                .uri("/get?name=John&age=30&city=New York")
+                .retrieve()
+                .body(HttpBinResponse.class);
+    }
+    
+    public HttpBinResponse getWithUriVariables() {
+        System.out.println("\n=== GET with URI Variables ===");
+        return defaultRestClient.get()
+                .uri("/get?name={name}&age={age}", "Jane", 25)
+                .retrieve()
+                .body(HttpBinResponse.class);
+    }
+    
+    public HttpBinResponse getWithCustomHeaders() {
+        System.out.println("\n=== GET with Custom Headers ===");
+        return defaultRestClient.get()
+                .uri("/get")
+                .header("X-Custom-Header", "Custom-Value")
+                .header("X-Request-ID", "12345")
+                .retrieve()
+                .body(HttpBinResponse.class);
+    }
+    
+    // POST Methods Demo
+    public HttpBinResponse postJson() {
+        System.out.println("\n=== POST with JSON Body ===");
+        User user = new User("Alice", "alice@example.com", 28);
+        
+        return defaultRestClient.post()
+                .uri("/post")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(user)
+                .retrieve()
+                .body(HttpBinResponse.class);
+    }
+    
+    public HttpBinResponse postFormData() {
+        System.out.println("\n=== POST with Form Data ===");
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.add("username", "johndoe");
+        formData.add("password", "secret123");
+        formData.add("email", "john@example.com");
+        
+        return defaultRestClient.post()
+                .uri("/post")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(formData)
+                .retrieve()
+                .body(HttpBinResponse.class);
+    }
+    
+    public HttpBinResponse postWithCustomClient() {
+        System.out.println("\n=== POST with Custom RestClient ===");
+        Map<String, Object> data = Map.of(
+                "message", "Hello from custom client",
+                "timestamp", System.currentTimeMillis()
+        );
+        
+        return customRestClient.post()
+                .uri("/post")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(data)
+                .retrieve()
+                .body(HttpBinResponse.class);
+    }
+    
+    // PUT Method Demo
+    public HttpBinResponse putData() {
+        System.out.println("\n=== PUT Request ===");
+        User updatedUser = new User("Bob Updated", "bob.updated@example.com", 35);
+        
+        return defaultRestClient.put()
+                .uri("/put")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(updatedUser)
+                .retrieve()
+                .body(HttpBinResponse.class);
+    }
+    
+    // PATCH Method Demo
+    public HttpBinResponse patchData() {
+        System.out.println("\n=== PATCH Request ===");
+        Map<String, Object> partialUpdate = Map.of("age", 36);
+        
+        return defaultRestClient.patch()
+                .uri("/patch")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(partialUpdate)
+                .retrieve()
+                .body(HttpBinResponse.class);
+    }
+    
+    // DELETE Method Demo
+    public HttpBinResponse deleteResource() {
+        System.out.println("\n=== DELETE Request ===");
+        return defaultRestClient.delete()
+                .uri("/delete")
+                .retrieve()
+                .body(HttpBinResponse.class);
+    }
+    
+    // Response Entity Demo
+    public ResponseEntity<HttpBinResponse> getWithResponseEntity() {
+        System.out.println("\n=== GET with ResponseEntity ===");
+        return defaultRestClient.get()
+                .uri("/get")
+                .retrieve()
+                .toEntity(HttpBinResponse.class);
+    }
+    
+    // Generic Type Demo
+    public Map<String, Object> getAsMap() {
+        System.out.println("\n=== GET as Generic Map ===");
+        return defaultRestClient.get()
+                .uri("/get")
+                .retrieve()
+                .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+    }
+    
+    // Error Handling Demo
+    public void demonstrateErrorHandling() {
+        System.out.println("\n=== Error Handling Demo ===");
+        
+        try {
+            // This will return 404
+            defaultRestClient.get()
+                    .uri("/status/404")
+                    .retrieve()
+                    .body(String.class);
+        } catch (RestClientResponseException e) {
+            System.out.println("❌ Caught RestClientResponseException:");
+            System.out.println("   Status Code: " + e.getStatusCode());
+            System.out.println("   Status Text: " + e.getStatusText());
+            System.out.println("   Response Body: " + e.getResponseBodyAsString());
+        }
+        
+        try {
+            // This will return 500
+            defaultRestClient.get()
+                    .uri("/status/500")
+                    .retrieve()
+                    .onStatus(HttpStatus::is5xxServerError, (request, response) -> {
+                        throw new RuntimeException("Server error occurred: " + response.getStatusCode());
+                    })
+                    .body(String.class);
+        } catch (RuntimeException e) {
+            System.out.println("❌ Caught custom exception: " + e.getMessage());
+        }
+    }
+    
+    // Status Code Handling Demo
+    public void demonstrateStatusHandling() {
+        System.out.println("\n=== Status Code Handling Demo ===");
+        
+        String result = defaultRestClient.get()
+                .uri("/status/201")
+                .retrieve()
+                .onStatus(HttpStatus::is2xxSuccessful, (request, response) -> {
+                    System.out.println("✅ Success! Status: " + response.getStatusCode());
+                })
+                .onStatus(HttpStatus::is4xxClientError, (request, response) -> {
+                    System.out.println("⚠️ Client error: " + response.getStatusCode());
+                })
+                .body(String.class);
+        
+        System.out.println("Response body: " + result);
+    }
+    
+    // Authentication Demo (Basic Auth)
+    public HttpBinResponse demonstrateBasicAuth() {
+        System.out.println("\n=== Basic Authentication Demo ===");
+        
+        try {
+            return defaultRestClient.get()
+                    .uri("/basic-auth/user/passwd")
+                    .header("Authorization", "Basic dXNlcjpwYXNzd2Q=") // user:passwd encoded
+                    .retrieve()
+                    .body(HttpBinResponse.class);
+        } catch (RestClientResponseException e) {
+            System.out.println("❌ Authentication failed: " + e.getStatusCode());
+            return null;
+        }
+    }
+    
+    // Headers Demo
+    public Map<String, String> getHeaders() {
+        System.out.println("\n=== Headers Demo ===");
+        
+        HttpBinResponse response = defaultRestClient.get()
+                .uri("/headers")
+                .header("X-Test-Header-1", "Value1")
+                .header("X-Test-Header-2", "Value2")
+                .retrieve()
+                .body(HttpBinResponse.class);
+        
+        return response != null ? response.getHeaders() : null;
+    }
+    
+    // IP Address Demo
+    public String getIpAddress() {
+        System.out.println("\n=== IP Address Demo ===");
+        
+        Map<String, Object> response = defaultRestClient.get()
+                .uri("/ip")
+                .retrieve()
+                .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+        
+        return response != null ? (String) response.get("origin") : null;
+    }
+    
+    // User Agent Demo
+    public String getUserAgent() {
+        System.out.println("\n=== User Agent Demo ===");
+        
+        Map<String, Object> response = defaultRestClient.get()
+                .uri("/user-agent")
+                .retrieve()
+                .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+        
+        return response != null ? (String) response.get("user-agent") : null;
+    }
+}
+
+// src/main/java/com/example/restclientdemo/runner/DemoRunner.java
+package com.example.restclientdemo.runner;
+
+import com.example.restclientdemo.model.HttpBinResponse;
+import com.example.restclientdemo.service.HttpBinService;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+
+import java.util.Map;
+
+@Component
+public class DemoRunner implements CommandLineRunner {
+    
+    private final HttpBinService httpBinService;
+    
+    public DemoRunner(HttpBinService httpBinService) {
+        this.httpBinService = httpBinService;
+    }
+    
+    @Override
+    public void run(String... args) throws Exception {
+        System.out.println("🌟 Starting Spring Boot RestClient Demo 🌟");
+        System.out.println("=" .repeat(50));
+        
+        // GET Requests
+        runDemo("Simple GET", () -> {
+            HttpBinResponse response = httpBinService.simpleGet();
+            System.out.println("URL: " + response.getUrl());
+            System.out.println("Origin: " + response.getOrigin());
+        });
+        
+        runDemo("GET with Query Parameters", () -> {
+            HttpBinResponse response = httpBinService.getWithQueryParams();
+            System.out.println("Args: " + response.getArgs());
+        });
+        
+        runDemo("GET with URI Variables", () -> {
+            HttpBinResponse response = httpBinService.getWithUriVariables();
+            System.out.println("Args: " + response.getArgs());
+        });
+        
+        runDemo("GET with Custom Headers", () -> {
+            HttpBinResponse response = httpBinService.getWithCustomHeaders();
+            System.out.println("Custom headers in response: " + 
+                response.getHeaders().entrySet().stream()
+                    .filter(e -> e.getKey().startsWith("X-"))
+                    .toList());
+        });
+        
+        // POST Requests
+        runDemo("POST with JSON", () -> {
+            HttpBinResponse response = httpBinService.postJson();
+            System.out.println("JSON Data: " + response.getJson());
+        });
+        
+        runDemo("POST with Form Data", () -> {
+            HttpBinResponse response = httpBinService.postFormData();
+            System.out.println("Form Data: " + response.getForm());
+        });
+        
+        runDemo("POST with Custom Client", () -> {
+            HttpBinResponse response = httpBinService.postWithCustomClient();
+            System.out.println("JSON Data: " + response.getJson());
+            System.out.println("Custom Header: " + response.getHeaders().get("Custom-Header"));
+        });
+        
+        // Other HTTP Methods
+        runDemo("PUT Request", () -> {
+            HttpBinResponse response = httpBinService.putData();
+            System.out.println("JSON Data: " + response.getJson());
+        });
+        
+        runDemo("PATCH Request", () -> {
+            HttpBinResponse response = httpBinService.patchData();
+            System.out.println("JSON Data: " + response.getJson());
+        });
+        
+        runDemo("DELETE Request", () -> {
+            HttpBinResponse response = httpBinService.deleteResource();
+            System.out.println("URL: " + response.getUrl());
+        });
+        
+        // Advanced Features
+        runDemo("Response Entity", () -> {
+            ResponseEntity<HttpBinResponse> response = httpBinService.getWithResponseEntity();
+            System.out.println("Status Code: " + response.getStatusCode());
+            System.out.println("Headers: " + response.getHeaders().getFirst("Content-Type"));
+            System.out.println("Body URL: " + response.getBody().getUrl());
+        });
+        
+        runDemo("Generic Map Response", () -> {
+            Map<String, Object> response = httpBinService.getAsMap();
+            System.out.println("Response as Map: " + response.keySet());
+        });
+        
+        // Utility Endpoints
+        runDemo("IP Address", () -> {
+            String ip = httpBinService.getIpAddress();
+            System.out.println("Your IP: " + ip);
+        });
+        
+        runDemo("User Agent", () -> {
+            String userAgent = httpBinService.getUserAgent();
+            System.out.println("User Agent: " + userAgent);
+        });
+        
+        runDemo("Headers Info", () -> {
+            Map<String, String> headers = httpBinService.getHeaders();
+            System.out.println("Request Headers Count: " + headers.size());
+            System.out.println("User-Agent: " + headers.get("User-Agent"));
+        });
+        
+        // Authentication
+        runDemo("Basic Authentication", () -> {
+            HttpBinResponse response = httpBinService.demonstrateBasicAuth();
+            if (response != null) {
+                System.out.println("✅ Authentication successful!");
+                System.out.println("Response: " + response.getUrl());
+            } else {
+                System.out.println("❌ Authentication failed");
+            }
+        });
+        
+        // Error Handling
+        runDemo("Error Handling", () -> {
+            httpBinService.demonstrateErrorHandling();
+        });
+        
+        runDemo("Status Code Handling", () -> {
+            httpBinService.demonstrateStatusHandling();
+        });
+        
+        System.out.println("\n🎉 Demo completed successfully! 🎉");
+    }
+    
+    private void runDemo(String title, Runnable demo) {
+        try {
+            System.out.println("\n" + "─".repeat(50));
+            System.out.println("🔥 " + title);
+            System.out.println("─".repeat(50));
+            demo.run();
+            Thread.sleep(1000); // Small delay between requests to be nice to httpbin.org
+        } catch (Exception e) {
+            System.err.println("❌ Error in " + title + ": " + e.getMessage());
+        }
+    }
+}
+
+// src/main/resources/application.properties
+# Application properties for RestClient Demo
+spring.application.name=restclient-demo
+
+# Disable web server since we're not using Spring Web
+spring.main.web-application-type=none
+
+# Logging configuration
+logging.level.org.springframework.web.client=DEBUG
+logging.level.org.apache.http=DEBUG
+
+# Optional: Configure connection timeouts
+spring.http.client.connect-timeout=5000
+spring.http.client.read-timeout=10000
