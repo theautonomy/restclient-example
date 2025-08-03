@@ -10,7 +10,7 @@ public interface RestClient {
     RequestBodySpec post();
     RequestBodySpec put();
     RequestBodySpec patch();
-    RequestHeadersSpec<?> delete();
+    RequestBodySpec delete();  // Changed to RequestBodySpec since httpbin accepts body
     RequestHeadersSpec<?> head();
     RequestHeadersSpec<?> options();
     

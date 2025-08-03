@@ -33,7 +33,7 @@ public class RestClientImpl implements RestClient {
     }
     
     @Override
-    public RequestHeadersSpec<?> delete() {
+    public RequestBodySpec delete() {
         return new DefaultRequestSpec(HttpMethod.DELETE, baseUrl, defaultHeaders);
     }
     
