@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.example.restclientdemo.model.HttpBinResponse;
 import com.example.restclientdemo.service.HttpBinService;
+import com.example.restclientdemo.service.HttpInterfaceService;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Component;
 public class DemoRunner implements CommandLineRunner {
 
     private final HttpBinService httpBinService;
+    private final HttpInterfaceService httpInterfaceService;
 
-    public DemoRunner(HttpBinService httpBinService) {
+    public DemoRunner(HttpBinService httpBinService, HttpInterfaceService httpInterfaceService) {
         this.httpBinService = httpBinService;
+        this.httpInterfaceService = httpInterfaceService;
     }
 
     @Override
@@ -23,6 +26,16 @@ public class DemoRunner implements CommandLineRunner {
         System.out.println("🌟 Starting Spring Boot RestClient Demo 🌟");
         System.out.println("=".repeat(50));
 
+        // Regular RestClient Examples
+        System.out.println("\n📌 RestClient Examples 📌");
+        runRestClientExamples();
+
+        // HTTP Interface Examples
+        System.out.println("\n📌 HTTP Interface Examples 📌");
+        httpInterfaceService.demonstrateHttpInterface();
+    }
+
+    private void runRestClientExamples() {
         // GET Requests
         runDemo(
                 "Simple GET",
