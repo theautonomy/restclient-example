@@ -334,6 +334,22 @@ class AdvancedConsumerExamples {
 }
 
 /*
+See Spring's implementation - https://github.com/spring-projects/spring-framework/blob/main/spring-web/src/main/java/org/springframework/web/client/DefaultRestClientBuilder.java#L241-L252
+@Override
+	public RestClient.Builder defaultHeaders(Consumer<HttpHeaders> headersConsumer) {
+		headersConsumer.accept(initHeaders());
+		return this;
+	}
+
+	private HttpHeaders initHeaders() {
+		if (this.defaultHeaders == null) {
+			this.defaultHeaders = new HttpHeaders();
+		}
+		return this.defaultHeaders;
+	}
+*/
+
+/*
 Ah, I understand now! You want to see a custom implementation of RestClient to understand how the builder pattern and Consumer work internally. Let me create a simplified version that demonstrates the mechanics.This custom implementation demonstrates exactly how the RestClient builder pattern and Consumer mechanism work behind the scenes:
 
 ## Key Mechanics Revealed:

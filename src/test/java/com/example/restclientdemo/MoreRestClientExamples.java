@@ -339,3 +339,44 @@ class RestClientDemo {
         System.out.println("\nAll demos completed!");
     }
 }
+
+
+/*
+
+I'll create a comprehensive example that demonstrates the RestClient implementation with different scenarios to illustrate how each method works.This comprehensive example illustrates several key concepts about RestClient implementation:
+
+## Key Demonstrations:
+
+### 1. **Basic vs Advanced Configuration**
+- **Basic**: Simple static headers using `defaultHeader()`
+- **Advanced**: Dynamic headers using `defaultHeaders(Consumer<HttpHeaders>)`
+
+### 2. **Consumer Function in Action**
+The `defaultHeaders(Consumer<HttpHeaders>)` method is particularly powerful because:
+- **Conditional Logic**: You can add headers based on environment, configuration, or runtime conditions
+- **Access to HttpHeaders API**: Use convenience methods like `setBasicAuth()`, `setBearerAuth()`
+- **Dynamic Values**: Generate headers with timestamps, UUIDs, or computed values
+- **Header Inspection**: You can examine existing headers and modify them
+
+### 3. **Real-World Scenarios**
+- **Multiple API Clients**: Different configurations for different services
+- **Authentication Patterns**: Basic Auth, Bearer tokens, custom API keys
+- **Environment-Specific Headers**: Different settings for dev/prod
+- **Tracing & Debugging**: Correlation IDs, timestamps, client identification
+
+### 4. **Behind the Scenes Process**
+When you call `defaultHeaders(headers -> {...})`:
+1. Spring creates an `HttpHeaders` object
+2. Applies any previously set default headers to it
+3. Passes this object to your consumer function
+4. Your function modifies the headers object directly
+5. Spring stores the final state for use in all requests
+
+### 5. **Debugging & Inspection**
+The example includes a demonstration that shows:
+- What headers are being configured
+- How to inspect the headers during configuration
+- How to verify what headers are actually sent to the server
+
+This approach gives you maximum flexibility while maintaining clean, readable code. The Consumer pattern is especially useful when you need to make decisions about headers at configuration time rather than request time.
+ */
