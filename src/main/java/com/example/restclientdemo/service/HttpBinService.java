@@ -169,7 +169,7 @@ public class HttpBinService {
             // This will return 404
             defaultRestClient.get().uri("/status/404").retrieve().body(String.class);
         } catch (RestClientResponseException e) {
-            System.out.println("❌ Caught RestClientResponseException:");
+            System.out.println("Caught RestClientResponseException:");
             System.out.println("   Status Code: " + e.getStatusCode());
             System.out.println("   Status Text: " + e.getStatusText());
             System.out.println("   Response Body: " + e.getResponseBodyAsString());
@@ -189,7 +189,7 @@ public class HttpBinService {
                             })
                     .body(String.class);
         } catch (RuntimeException e) {
-            System.out.println("❌ Caught custom exception: " + e.getMessage());
+            System.out.println("Caught custom exception: " + e.getMessage());
         }
     }
 
@@ -206,13 +206,12 @@ public class HttpBinService {
                                 status -> status.is2xxSuccessful(),
                                 (request, response) -> {
                                     System.out.println(
-                                            "✅ Success! Status: " + response.getStatusCode());
+                                            "Success! Status: " + response.getStatusCode());
                                 })
                         .onStatus(
                                 status -> status.is4xxClientError(),
                                 (request, response) -> {
-                                    System.out.println(
-                                            "⚠️ Client error: " + response.getStatusCode());
+                                    System.out.println("Client error: " + response.getStatusCode());
                                 })
                         .body(String.class);
 
@@ -231,7 +230,7 @@ public class HttpBinService {
                     .retrieve()
                     .body(HttpBinResponse.class);
         } catch (RestClientResponseException e) {
-            System.out.println("❌ Authentication failed: " + e.getStatusCode());
+            System.out.println("Authentication failed: " + e.getStatusCode());
             return null;
         }
     }

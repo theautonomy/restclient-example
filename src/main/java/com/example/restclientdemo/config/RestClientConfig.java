@@ -2,6 +2,7 @@ package com.example.restclientdemo.config;
 
 import com.example.restclientdemo.client.HttpBinClient;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -32,16 +33,16 @@ public class RestClientConfig {
     private ClientHttpRequestInterceptor loggingInterceptor() {
         return (request, body, execution) -> {
             System.out.println(
-                    "🚀 Making request to: " + request.getMethod() + " " + request.getURI());
-            System.out.println("📤 Headers: " + request.getHeaders());
+                    "Making request to: " + request.getMethod() + " " + request.getURI());
+            System.out.println("Headers: " + request.getHeaders());
             if (body.length > 0) {
-                System.out.println("📄 Body: " + new String(body));
+                System.out.println("Body: " + new String(body));
             }
 
             var response = execution.execute(request, body);
 
-            System.out.println("📥 Response Status: " + response.getStatusCode());
-            System.out.println("📋 Response Headers: " + response.getHeaders());
+            System.out.println("Response Status: " + response.getStatusCode());
+            System.out.println("Response Headers: " + response.getHeaders());
             System.out.println("---");
 
             return response;
@@ -49,8 +50,8 @@ public class RestClientConfig {
     }
 
     @Bean
-    public HttpBinClient httpBinClient(RestClient defaultRestClient) {
-        RestClientAdapter adapter = RestClientAdapter.create(defaultRestClient);
+    public HttpBinClient httpBinClient(@Qualifier("defaultRestClient") RestClient restClient) {
+        RestClientAdapter adapter = RestClientAdapter.create(restClient);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
         return factory.createClient(HttpBinClient.class);
     }

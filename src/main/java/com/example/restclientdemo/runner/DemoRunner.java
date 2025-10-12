@@ -23,15 +23,15 @@ public class DemoRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("🌟 Starting Spring Boot RestClient Demo 🌟");
+        System.out.println("Starting Spring Boot RestClient Demo");
         System.out.println("=".repeat(50));
 
         // Regular RestClient Examples
-        System.out.println("\n📌 RestClient Examples 📌");
+        System.out.println("\nRestClient Examples");
         runRestClientExamples();
 
         // HTTP Interface Examples
-        System.out.println("\n📌 HTTP Interface Examples 📌");
+        System.out.println("\nHTTP Interface Examples");
         httpInterfaceService.demonstrateHttpInterface();
     }
 
@@ -164,10 +164,10 @@ public class DemoRunner implements CommandLineRunner {
                 () -> {
                     HttpBinResponse response = httpBinService.demonstrateBasicAuth();
                     if (response != null) {
-                        System.out.println("✅ Authentication successful!");
+                        System.out.println("Authentication successful!");
                         System.out.println("Response: " + response.getUrl());
                     } else {
-                        System.out.println("❌ Authentication failed");
+                        System.out.println("Authentication failed");
                     }
                 });
 
@@ -184,18 +184,18 @@ public class DemoRunner implements CommandLineRunner {
                     httpBinService.demonstrateStatusHandling();
                 });
 
-        System.out.println("\n🎉 Demo completed successfully! 🎉");
+        System.out.println("\nDemo completed successfully!");
     }
 
     private void runDemo(String title, Runnable demo) {
         try {
             System.out.println("\n" + "─".repeat(50));
-            System.out.println("🔥 " + title);
+            System.out.println(title);
             System.out.println("─".repeat(50));
             demo.run();
             Thread.sleep(1000); // Small delay between requests to be nice to httpbin.org
         } catch (Exception e) {
-            System.err.println("❌ Error in " + title + ": " + e.getMessage());
+            System.err.println("Error in " + title + ": " + e.getMessage());
         }
     }
 }

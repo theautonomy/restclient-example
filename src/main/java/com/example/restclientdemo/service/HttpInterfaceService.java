@@ -23,7 +23,7 @@ public class HttpInterfaceService {
         // Simple GET
         System.out.println("\n1. Simple GET request:");
         HttpBinResponse response = httpBinClient.get();
-        System.out.println("✅ Response: " + response);
+        System.out.println("Response: " + response);
 
         // GET with query parameters
         System.out.println("\n2. GET with query parameters:");
@@ -32,21 +32,21 @@ public class HttpInterfaceService {
                         "name", "John Doe",
                         "age", "30");
         response = httpBinClient.getWithParams(params);
-        System.out.println("✅ Response: " + response);
+        System.out.println("Response: " + response);
 
         // POST with body
         System.out.println("\n3. POST with request body:");
         User user = new User("Alice", "alice@example.com", 25);
         response = httpBinClient.post(user);
-        System.out.println("✅ Response: " + response);
+        System.out.println("Response: " + response);
 
         // Basic Auth
         System.out.println("\n4. Basic Auth:");
         try {
             response = httpBinClient.basicAuth();
-            System.out.println("✅ Response: " + response);
+            System.out.println("Response: " + response);
         } catch (Exception e) {
-            System.out.println("❌ Auth failed: " + e.getMessage());
+            System.out.println("Auth failed: " + e.getMessage());
         }
     }
 }

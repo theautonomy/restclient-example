@@ -30,3 +30,4 @@ target/
 *.zip
 *.tar.gz
 *.rar
+nbproject/project.properties
