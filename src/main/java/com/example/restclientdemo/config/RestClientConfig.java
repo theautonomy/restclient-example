@@ -13,9 +13,8 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 public class RestClientConfig {
 
     @Bean
-    public RestClient defaultRestClient() {
-        return RestClient.builder()
-                .baseUrl("https://httpbin.org")
+    public RestClient defaultRestClient(RestClient.Builder builder) {
+        return builder.baseUrl("https://httpbin.org")
                 .defaultHeader("User-Agent", "Spring-RestClient-Demo/1.0")
                 .defaultHeader("Accept", "application/json")
                 .requestInterceptor(loggingInterceptor())
@@ -23,9 +22,8 @@ public class RestClientConfig {
     }
 
     @Bean
-    public RestClient customRestClient() {
-        return RestClient.builder()
-                .baseUrl("https://httpbin.org")
+    public RestClient customRestClient(RestClient.Builder builder) {
+        return builder.baseUrl("https://httpbin.org")
                 .defaultHeader("Custom-Header", "Demo-Value")
                 .requestInterceptor(loggingInterceptor())
                 .build();

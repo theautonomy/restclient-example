@@ -1,0 +1,405 @@
+= Spring Boot RestClient Demo
+:toc:
+:toc-title: Table of Contents
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: highlightjs
+
+== Overview
+
+A comprehensive demonstration application showcasing Spring Boot's `RestClient` API and HTTP Interface capabilities. This project provides practical examples of making HTTP requests, handling responses, error management, and declarative HTTP clients.
+
+=== Key Features
+
+* Fluent RestClient API examples for all HTTP methods (GET, POST, PUT, PATCH, DELETE)
+* Multiple RestClient configurations with custom headers and interceptors
+* Declarative HTTP Interface implementation using `@HttpExchange`
+* Request and response logging interceptors
+* Error handling and status code management
+* Query parameters, URI variables, and path variables
+* Form data and JSON payload examples
+* Basic authentication demonstration
+* Generic type handling with `ParameterizedTypeReference`
+
+== Technology Stack
+
+* *Spring Boot*: 3.5.3
+* *Java*: 17
+* *Build Tool*: Maven
+* *Test API*: https://httpbin.org (for HTTP request/response testing)
+
+== Project Structure
+
+[source]
+----
+restclient-explained/
+├── src/main/java/com/example/restclientdemo/
+│   ├── RestClientDemoApplication.java          # Main application entry point
+│   ├── config/
+│   │   └── RestClientConfig.java               # RestClient bean configuration
+│   ├── client/
+│   │   └── HttpBinClient.java                  # Declarative HTTP Interface
+│   ├── service/
+│   │   ├── HttpBinService.java                 # RestClient usage examples
+│   │   └── HttpInterfaceService.java           # HTTP Interface usage examples
+│   ├── runner/
+│   │   └── DemoRunner.java                     # CommandLineRunner for demonstrations
+│   └── model/
+│       ├── HttpBinResponse.java                # Response model
+│       └── User.java                           # User model for requests
+├── src/test/java/
+│   └── com/example/restclientdemo/
+│       ├── implementation/                     # RestClient implementation examples
+│       ├── RestClientExample.java              # Basic examples
+│       └── MoreRestClientExamples.java         # Advanced examples
+└── pom.xml
+----
+
+== Getting Started
+
+=== Prerequisites
+
+* Java 17 or higher
+* Maven 3.6+
+
+=== Running the Application
+
+[source,bash]
+----
+# Clone the repository
+git clone <repository-url>
+cd restclient-explained
+
+# Build the project
+mvn clean install
+
+# Run the application
+mvn spring-boot:run
+----
+
+The application will automatically execute all demonstration examples on startup via the `DemoRunner` component.
+
+== RestClient Configuration
+
+The application configures two `RestClient` beans in link:src/main/java/com/example/restclientdemo/config/RestClientConfig.java[RestClientConfig.java]:
+
+=== Default RestClient
+
+[source,java]
+----
+@Bean
+public RestClient defaultRestClient(RestClient.Builder builder) {
+    return builder
+            .baseUrl("https://httpbin.org")
+            .defaultHeader("User-Agent", "Spring-RestClient-Demo/1.0")
+            .defaultHeader("Accept", "application/json")
+            .requestInterceptor(loggingInterceptor())
+            .build();
+}
+----
+
+* Base URL set to `https://httpbin.org`
+* Default headers for User-Agent and Accept
+* Request/response logging interceptor
+
+=== Custom RestClient
+
+[source,java]
+----
+@Bean
+public RestClient customRestClient(RestClient.Builder builder) {
+    return builder
+            .baseUrl("https://httpbin.org")
+            .defaultHeader("Custom-Header", "Demo-Value")
+            .requestInterceptor(loggingInterceptor())
+            .build();
+}
+----
+
+* Demonstrates multiple RestClient configurations
+* Custom headers specific to this client
+
+== Usage Examples
+
+=== Basic GET Request
+
+[source,java]
+----
+HttpBinResponse response = restClient
+    .get()
+    .uri("/get")
+    .retrieve()
+    .body(HttpBinResponse.class);
+----
+
+=== GET with Query Parameters
+
+[source,java]
+----
+// Using URI variables
+HttpBinResponse response = restClient
+    .get()
+    .uri("/get?name={name}&age={age}", "Jane", 25)
+    .retrieve()
+    .body(HttpBinResponse.class);
+----
+
+=== POST with JSON Body
+
+[source,java]
+----
+User user = new User("Alice", "alice@example.com", 28);
+
+HttpBinResponse response = restClient
+    .post()
+    .uri("/post")
+    .contentType(MediaType.APPLICATION_JSON)
+    .body(user)
+    .retrieve()
+    .body(HttpBinResponse.class);
+----
+
+=== POST with Form Data
+
+[source,java]
+----
+MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+formData.add("username", "johndoe");
+formData.add("password", "secret123");
+
+HttpBinResponse response = restClient
+    .post()
+    .uri("/post")
+    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+    .body(formData)
+    .retrieve()
+    .body(HttpBinResponse.class);
+----
+
+=== Custom Headers
+
+[source,java]
+----
+HttpBinResponse response = restClient
+    .get()
+    .uri("/get")
+    .header("X-Custom-Header", "Custom-Value")
+    .header("X-Request-ID", "12345")
+    .retrieve()
+    .body(HttpBinResponse.class);
+----
+
+=== Error Handling
+
+[source,java]
+----
+try {
+    restClient
+        .get()
+        .uri("/status/500")
+        .retrieve()
+        .onStatus(
+            status -> status.is5xxServerError(),
+            (request, response) -> {
+                throw new RuntimeException("Server error: " + response.getStatusCode());
+            })
+        .body(String.class);
+} catch (RestClientResponseException e) {
+    System.out.println("Status Code: " + e.getStatusCode());
+    System.out.println("Response Body: " + e.getResponseBodyAsString());
+}
+----
+
+=== ResponseEntity with Headers and Status
+
+[source,java]
+----
+ResponseEntity<HttpBinResponse> response = restClient
+    .get()
+    .uri("/get")
+    .retrieve()
+    .toEntity(HttpBinResponse.class);
+
+System.out.println("Status: " + response.getStatusCode());
+System.out.println("Headers: " + response.getHeaders());
+System.out.println("Body: " + response.getBody());
+----
+
+=== Generic Type Handling
+
+[source,java]
+----
+Map<String, Object> response = restClient
+    .get()
+    .uri("/get")
+    .retrieve()
+    .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+----
+
+=== Basic Authentication
+
+[source,java]
+----
+HttpBinResponse response = restClient
+    .get()
+    .uri("/basic-auth/user/passwd")
+    .header("Authorization", "Basic dXNlcjpwYXNzd2Q=")
+    .retrieve()
+    .body(HttpBinResponse.class);
+----
+
+== HTTP Interface (Declarative Client)
+
+The link:src/main/java/com/example/restclientdemo/client/HttpBinClient.java[HttpBinClient.java] demonstrates Spring's declarative HTTP interface:
+
+[source,java]
+----
+@HttpExchange("https://httpbin.org")
+public interface HttpBinClient {
+
+    @GetExchange("/get")
+    HttpBinResponse get();
+
+    @PostExchange("/post")
+    HttpBinResponse post(@RequestBody User user);
+}
+----
+
+Configuration:
+
+[source,java]
+----
+@Bean
+public HttpBinClient httpBinClient(RestClient defaultRestClient) {
+    RestClientAdapter adapter = RestClientAdapter.create(defaultRestClient);
+    HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
+    return factory.createClient(HttpBinClient.class);
+}
+----
+
+== Request Logging
+
+The application includes a logging interceptor that outputs:
+
+* Request method and URI
+* Request headers
+* Request body (if present)
+* Response status code
+* Response headers
+
+Example output:
+
+[source]
+----
+🚀 Making request to: GET https://httpbin.org/get
+📤 Headers: [User-Agent:"Spring-RestClient-Demo/1.0", Accept:"application/json"]
+📥 Response Status: 200 OK
+📋 Response Headers: [Content-Type:"application/json"]
+---
+----
+
+== HTTP Methods Demonstrated
+
+[cols="1,3"]
+|===
+|Method |Purpose
+
+|GET
+|Retrieve resources with query parameters, custom headers
+
+|POST
+|Create resources with JSON or form data
+
+|PUT
+|Update entire resources
+
+|PATCH
+|Partial resource updates
+
+|DELETE
+|Delete resources
+|===
+
+== Service Classes
+
+=== HttpBinService
+
+Located at link:src/main/java/com/example/restclientdemo/service/HttpBinService.java[HttpBinService.java:1], this service provides comprehensive examples:
+
+* Simple GET requests
+* GET with query parameters and URI variables
+* POST with JSON and form data
+* PUT and PATCH operations
+* DELETE requests
+* ResponseEntity handling
+* Error handling with status codes
+* Basic authentication
+* Custom headers
+
+=== HttpInterfaceService
+
+Demonstrates the declarative HTTP Interface approach using the `HttpBinClient`.
+
+== Running Specific Examples
+
+The `DemoRunner` component executes all examples sequentially. To run specific examples:
+
+. Modify link:src/main/java/com/example/restclientdemo/runner/DemoRunner.java[DemoRunner.java:25]
+. Comment out unwanted demo calls
+. Run the application
+
+Alternatively, inject the services into your own components and call specific methods.
+
+== Development Notes
+
+=== Multiple RestClient Configurations
+
+The project demonstrates using multiple `RestClient` beans with qualifiers:
+
+[source,java]
+----
+public HttpBinService(
+    @Qualifier("defaultRestClient") RestClient defaultRestClient,
+    @Qualifier("customRestClient") RestClient customRestClient) {
+    this.defaultRestClient = defaultRestClient;
+    this.customRestClient = customRestClient;
+}
+----
+
+=== Request Interceptors
+
+Interceptors are useful for:
+
+* Logging requests and responses
+* Adding authentication headers
+* Request/response timing
+* Request modification
+
+=== Error Handling Strategies
+
+. *Try-Catch with RestClientResponseException*: Catch specific HTTP errors
+. *onStatus() Handler*: Define custom error handling for specific status codes
+. *Custom Exception Mapping*: Throw domain-specific exceptions
+
+== Testing
+
+The `src/test` directory contains:
+
+* Implementation examples showing how RestClient works internally
+* Additional usage examples in `RestClientExample.java` and `MoreRestClientExamples.java`
+
+Run tests:
+
+[source,bash]
+----
+mvn test
+----
+
+== Resources
+
+* https://docs.spring.io/spring-framework/reference/integration/rest-clients.html[Spring RestClient Documentation]
+* https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-http-interface[HTTP Interface Documentation]
+* https://httpbin.org/[httpbin.org API Documentation]
+* https://spring.io/blog/2023/07/13/new-in-spring-6-1-restclient[Spring Blog: RestClient Introduction]
+
