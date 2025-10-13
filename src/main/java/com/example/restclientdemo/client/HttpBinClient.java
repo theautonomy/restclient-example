@@ -3,6 +3,7 @@ package com.example.restclientdemo.client;
 import java.util.Map;
 
 import com.example.restclientdemo.model.HttpBinResponse;
+import com.example.restclientdemo.model.SearchQuery;
 import com.example.restclientdemo.model.User;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,4 +25,7 @@ public interface HttpBinClient {
 
     @GetExchange("/basic-auth/{user}/{passwd}")
     HttpBinResponse basicAuth();
+
+    @GetExchange("/get")
+    HttpBinResponse search(SearchQuery searchQuery);
 }

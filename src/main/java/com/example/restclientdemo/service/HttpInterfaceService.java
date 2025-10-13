@@ -4,10 +4,18 @@ import java.util.Map;
 
 import com.example.restclientdemo.client.HttpBinClient;
 import com.example.restclientdemo.model.HttpBinResponse;
+import com.example.restclientdemo.model.SearchQuery;
 import com.example.restclientdemo.model.User;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Service demonstrating HTTP Interface usage with declarative client methods.
+ *
+ * <p>This service showcases: - Standard HTTP Interface method calls - Custom argument resolver
+ * usage with SearchQuery objects - How complex objects are automatically converted to query
+ * parameters
+ */
 @Service
 public class HttpInterfaceService {
 
@@ -48,5 +56,45 @@ public class HttpInterfaceService {
         } catch (Exception e) {
             System.out.println("Auth failed: " + e.getMessage());
         }
+
+        // Custom Argument Resolver - SearchQuery
+        demonstrateCustomArgumentResolver();
+    }
+
+    /**
+     * Demonstrates custom HttpServiceArgumentResolver with SearchQuery.
+     *
+     * <p>The SearchQuery object is automatically converted to query parameters by the
+     * SearchQueryArgumentResolver: - searchTerm -> q - limit -> limit - sortBy -> sort - ascending
+     * -> order (asc/desc)
+     */
+    public void demonstrateCustomArgumentResolver() {
+        System.out.println("\n=== Custom Argument Resolver Demo ===");
+
+        // Simple search with just a search term
+        System.out.println("\n1. Simple search with SearchQuery:");
+        SearchQuery simpleQuery = SearchQuery.of("spring boot");
+        HttpBinResponse response = httpBinClient.search(simpleQuery);
+        System.out.println("Search Query: " + simpleQuery);
+        System.out.println("Response args: " + response.getArgs());
+
+        // Search with limit
+        System.out.println("\n2. Search with limit:");
+        SearchQuery limitedQuery = SearchQuery.of("java", 5);
+        response = httpBinClient.search(limitedQuery);
+        System.out.println("Search Query: " + limitedQuery);
+        System.out.println("Response args: " + response.getArgs());
+
+        // Search with all parameters
+        System.out.println("\n3. Complete search with all parameters:");
+        SearchQuery fullQuery = new SearchQuery("rest api", 20, "date", false);
+        response = httpBinClient.search(fullQuery);
+        System.out.println("Search Query: " + fullQuery);
+        System.out.println("Response args: " + response.getArgs());
+        System.out.println("Notice how SearchQuery fields are converted to query parameters:");
+        System.out.println("  - searchTerm='rest api' -> q=rest api");
+        System.out.println("  - limit=20 -> limit=20");
+        System.out.println("  - sortBy='date' -> sort=date");
+        System.out.println("  - ascending=false -> order=desc");
     }
 }

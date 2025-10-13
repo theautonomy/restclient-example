@@ -3,6 +3,7 @@ package com.example.restclientdemo.runner;
 import java.util.Map;
 
 import com.example.restclientdemo.model.HttpBinResponse;
+import com.example.restclientdemo.service.ErrorHandlingService;
 import com.example.restclientdemo.service.HttpBinService;
 import com.example.restclientdemo.service.HttpInterfaceService;
 
@@ -15,10 +16,15 @@ public class DemoRunner implements CommandLineRunner {
 
     private final HttpBinService httpBinService;
     private final HttpInterfaceService httpInterfaceService;
+    private final ErrorHandlingService errorHandlingService;
 
-    public DemoRunner(HttpBinService httpBinService, HttpInterfaceService httpInterfaceService) {
+    public DemoRunner(
+            HttpBinService httpBinService,
+            HttpInterfaceService httpInterfaceService,
+            ErrorHandlingService errorHandlingService) {
         this.httpBinService = httpBinService;
         this.httpInterfaceService = httpInterfaceService;
+        this.errorHandlingService = errorHandlingService;
     }
 
     @Override
@@ -33,6 +39,22 @@ public class DemoRunner implements CommandLineRunner {
         // HTTP Interface Examples
         System.out.println("\nHTTP Interface Examples");
         httpInterfaceService.demonstrateHttpInterface();
+
+        // Error Handling Examples with ResponseErrorHandler
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("ResponseErrorHandler Examples");
+        System.out.println("=".repeat(50));
+        runDemo(
+                "Error Handling with ResponseErrorHandler",
+                () -> {
+                    errorHandlingService.demonstrateErrorHandling();
+                });
+
+        runDemo(
+                "Error Recovery Strategies",
+                () -> {
+                    errorHandlingService.demonstrateErrorRecovery();
+                });
     }
 
     private void runRestClientExamples() {

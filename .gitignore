@@ -31,3 +31,4 @@ target/
 *.tar.gz
 *.rar
 nbproject/project.properties
+.claude/settings.local.json

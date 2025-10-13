@@ -403,3 +403,7 @@ mvn test
 * https://httpbin.org/[httpbin.org API Documentation]
 * https://spring.io/blog/2023/07/13/new-in-spring-6-1-restclient[Spring Blog: RestClient Introduction]
 
+== Reference
+* https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.4-Release-Notes#restclient-and-resttemplate
+* https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-request-factories
+
