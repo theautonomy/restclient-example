@@ -7,14 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-/**
- * Service demonstrating various error handling strategies with RestClient.
- *
- * <p>This service showcases: - Using custom ResponseErrorHandler for centralized error handling -
- * Handling different HTTP error status codes (4xx and 5xx) - Catching and processing custom
- * exceptions - Demonstrating error recovery strategies - Using defaultStatusHandler for inline
- * error handling
- */
+/** Service demonstrating various error handling strategies with RestClient. */
 @Service
 public class ErrorHandlingService {
 
@@ -28,10 +21,6 @@ public class ErrorHandlingService {
         this.defaultRestClient = defaultRestClient;
     }
 
-    /**
-     * Demonstrates handling various HTTP error status codes. Shows how the custom
-     * ResponseErrorHandler catches and processes errors.
-     */
     public void demonstrateErrorHandling() {
         System.out.println("\n=== Error Handling Demo ===");
 

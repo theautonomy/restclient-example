@@ -18,10 +18,8 @@ public class HttpBinResponse {
     @JsonProperty("user-agent")
     private String userAgent;
 
-    // Constructors
     public HttpBinResponse() {}
 
-    // Getters and Setters
     public String getUrl() {
         return url;
     }

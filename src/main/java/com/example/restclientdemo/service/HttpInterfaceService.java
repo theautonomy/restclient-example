@@ -9,13 +9,7 @@ import com.example.restclientdemo.model.User;
 
 import org.springframework.stereotype.Service;
 
-/**
- * Service demonstrating HTTP Interface usage with declarative client methods.
- *
- * <p>This service showcases: - Standard HTTP Interface method calls - Custom argument resolver
- * usage with SearchQuery objects - How complex objects are automatically converted to query
- * parameters
- */
+/** Service demonstrating HTTP Interface usage with declarative client methods. */
 @Service
 public class HttpInterfaceService {
 

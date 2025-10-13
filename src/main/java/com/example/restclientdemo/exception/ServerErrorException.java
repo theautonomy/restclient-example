@@ -1,13 +1,5 @@
 package com.example.restclientdemo.exception;
 
-/**
- * Exception thrown for HTTP 5xx server errors.
- *
- * <p>This exception is raised when the server returns a server error status code, indicating issues
- * such as: - 500 Internal Server Error: Unexpected server error - 502 Bad Gateway: Invalid response
- * from upstream server - 503 Service Unavailable: Server temporarily unavailable - 504 Gateway
- * Timeout: Upstream server timeout
- */
 public class ServerErrorException extends RuntimeException {
 
     private final int statusCode;

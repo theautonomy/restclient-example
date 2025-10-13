@@ -13,7 +13,6 @@ public class User {
         this.age = age;
     }
 
-    // Getters and Setters
     public String getName() {
         return name;
     }

@@ -63,7 +63,6 @@ public class HttpBinService {
                 .body(HttpBinResponse.class);
     }
 
-    // POST Methods Demo
     public HttpBinResponse postJson() {
         System.out.println("\n=== POST with JSON Body ===");
         User user = new User("Alice", "alice@example.com", 28);

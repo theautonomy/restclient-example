@@ -7,17 +7,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.service.invoker.HttpRequestValues;
 import org.springframework.web.service.invoker.HttpServiceArgumentResolver;
 
-/**
- * Custom argument resolver for SearchQuery objects in HTTP interfaces.
- *
- * <p>This resolver converts SearchQuery objects into query parameters for HTTP requests. It
- * demonstrates the power of custom argument resolvers to handle complex parameter types in
- * declarative HTTP interfaces.
- *
- * <p>When a method parameter of type SearchQuery is encountered, this resolver: - Extracts the
- * search term, limit, sortBy, and ascending fields - Converts them to appropriate query parameters
- * - Adds them to the HTTP request
- */
+/** Custom argument resolver for SearchQuery objects in HTTP interfaces. */
 public class SearchQueryArgumentResolver implements HttpServiceArgumentResolver {
 
     @Override

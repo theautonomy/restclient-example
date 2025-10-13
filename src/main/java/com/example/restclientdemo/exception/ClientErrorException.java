@@ -1,13 +1,5 @@
 package com.example.restclientdemo.exception;
 
-/**
- * Exception thrown for HTTP 4xx client errors.
- *
- * <p>This exception is raised when the server returns a client error status code, indicating issues
- * such as: - 400 Bad Request: Invalid request syntax or parameters - 401 Unauthorized:
- * Authentication required - 403 Forbidden: Access denied - 404 Not Found: Resource not found - 422
- * Unprocessable Entity: Validation errors
- */
 public class ClientErrorException extends RuntimeException {
 
     private final int statusCode;

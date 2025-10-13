@@ -1,9 +1,6 @@
 package com.example.restclientdemo.model;
 
-/**
- * Custom search query object that will be handled by SearchQueryArgumentResolver. This demonstrates
- * how to use custom argument resolvers with HTTP interfaces.
- */
+/** Custom search query object that will be handled by SearchQueryArgumentResolver. */
 public record SearchQuery(String searchTerm, Integer limit, String sortBy, Boolean ascending) {
 
     public SearchQuery {
