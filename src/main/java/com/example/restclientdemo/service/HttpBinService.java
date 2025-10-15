@@ -341,7 +341,7 @@ public class HttpBinService {
     }
 
     // Authentication Demo (Basic Auth)
-    public HttpBinResponse demonstrateBasicAuth() {
+    public String demonstrateBasicAuth() {
         System.out.println("\n=== Basic Authentication Demo ===");
 
         try {
@@ -350,7 +350,7 @@ public class HttpBinService {
                     .uri("/basic-auth/user/passwd")
                     .header("Authorization", "Basic dXNlcjpwYXNzd2Q=") // user:passwd encoded
                     .retrieve()
-                    .body(HttpBinResponse.class);
+                    .body(String.class);
         } catch (RestClientResponseException e) {
             System.out.println("Authentication failed: " + e.getStatusCode());
             return null;
