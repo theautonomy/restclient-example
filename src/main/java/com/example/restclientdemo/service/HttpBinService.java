@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.example.restclientdemo.model.HttpBinResponse;
 import com.example.restclientdemo.model.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
@@ -20,12 +21,15 @@ public class HttpBinService {
 
     private final RestClient defaultRestClient;
     private final RestClient customRestClient;
+    private final ObjectMapper objectMapper;
 
     public HttpBinService(
             @Qualifier("defaultRestClient") RestClient defaultRestClient,
-            @Qualifier("customRestClient") RestClient customRestClient) {
+            @Qualifier("customRestClient") RestClient customRestClient,
+            ObjectMapper objectMapper) {
         this.defaultRestClient = defaultRestClient;
         this.customRestClient = customRestClient;
+        this.objectMapper = objectMapper;
     }
 
     // GET Methods Demo
@@ -215,6 +219,125 @@ public class HttpBinService {
                         .body(String.class);
 
         System.out.println("Response body: " + result);
+    }
+
+    // Exchange Method Demo - Full control over request and response
+    public HttpBinResponse demonstrateExchange() {
+        System.out.println("\n=== Exchange Method Demo ===");
+        System.out.println("Using exchange() for full control over request and response handling");
+
+        return defaultRestClient
+                .get()
+                .uri("/get?id=123&name=TestUser")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange(
+                        (request, response) -> {
+                            System.out.println("Inside exchange handler:");
+                            System.out.println("  Request URI: " + request.getURI());
+                            System.out.println("  Response Status: " + response.getStatusCode());
+                            System.out.println(
+                                    "  Response Headers: " + response.getHeaders().keySet());
+
+                            // Manual error handling - status handlers are NOT automatically
+                            // applied
+                            if (response.getStatusCode().is4xxClientError()) {
+                                throw new RuntimeException(
+                                        "Client error: "
+                                                + response.getStatusCode()
+                                                + ", Headers: "
+                                                + response.getHeaders());
+                            } else if (response.getStatusCode().is5xxServerError()) {
+                                throw new RuntimeException(
+                                        "Server error: " + response.getStatusCode());
+                            }
+
+                            // Custom response conversion
+                            try {
+                                HttpBinResponse result =
+                                        objectMapper.readValue(
+                                                response.getBody(), HttpBinResponse.class);
+                                System.out.println(
+                                        "  Successfully converted response to HttpBinResponse");
+                                return result;
+                            } catch (Exception e) {
+                                throw new RuntimeException("Failed to parse response", e);
+                            }
+                        });
+    }
+
+    // Exchange with error simulation
+    public String demonstrateExchangeWithError() {
+        System.out.println("\n=== Exchange Method with Error Handling ===");
+
+        try {
+            return defaultRestClient
+                    .get()
+                    .uri("/status/404") // This will return 404
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange(
+                            (request, response) -> {
+                                System.out.println("Response Status: " + response.getStatusCode());
+
+                                // With exchange(), we manually handle all status codes
+                                if (response.getStatusCode().is4xxClientError()) {
+                                    System.out.println("  Handling 4xx error in exchange method");
+                                    throw new RuntimeException(
+                                            "Custom 4xx error: " + response.getStatusCode());
+                                }
+
+                                return "Success";
+                            });
+        } catch (RuntimeException e) {
+            System.out.println("Caught exception: " + e.getMessage());
+            return "Error handled: " + e.getMessage();
+        }
+    }
+
+    // Comparison: Exchange vs Retrieve
+    public void compareExchangeVsRetrieve() {
+        System.out.println("\n=== Comparison: Exchange vs Retrieve ===");
+
+        // Using retrieve() - automatic status code handling
+        System.out.println("\n1. Using retrieve():");
+        try {
+            defaultRestClient.get().uri("/get").retrieve().body(HttpBinResponse.class);
+            System.out.println("   retrieve() automatically applies default status handlers");
+        } catch (Exception e) {
+            System.out.println("   Error: " + e.getMessage());
+        }
+
+        // Using exchange() - manual status code handling
+        System.out.println("\n2. Using exchange():");
+        try {
+            HttpBinResponse result =
+                    defaultRestClient
+                            .get()
+                            .uri("/get")
+                            .exchange(
+                                    (request, response) -> {
+                                        System.out.println(
+                                                "   exchange() requires manual handling of status codes");
+                                        System.out.println(
+                                                "   You have direct access to request: "
+                                                        + request.getURI());
+                                        System.out.println(
+                                                "   You have direct access to response: "
+                                                        + response.getStatusCode());
+
+                                        // Must manually convert response
+                                        return objectMapper.readValue(
+                                                response.getBody(), HttpBinResponse.class);
+                                    });
+            System.out.println("   Success: " + result);
+        } catch (Exception e) {
+            System.out.println("   Error: " + e.getMessage());
+        }
+
+        System.out.println("\nKey Differences:");
+        System.out.println("  - retrieve(): Status handlers applied automatically");
+        System.out.println("  - exchange(): Full manual control, no automatic error handling");
+        System.out.println("  - exchange(): Direct access to both request and response objects");
+        System.out.println("  - exchange(): Useful for complex response processing scenarios");
     }
 
     // Authentication Demo (Basic Auth)

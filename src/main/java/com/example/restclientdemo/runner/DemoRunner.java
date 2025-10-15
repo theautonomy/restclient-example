@@ -206,6 +206,27 @@ public class DemoRunner implements CommandLineRunner {
                     httpBinService.demonstrateStatusHandling();
                 });
 
+        // Exchange Method Examples
+        runDemo(
+                "Exchange Method - Full Control",
+                () -> {
+                    HttpBinResponse response = httpBinService.demonstrateExchange();
+                    System.out.println("Result: " + response.getArgs());
+                });
+
+        runDemo(
+                "Exchange Method - Error Handling",
+                () -> {
+                    String result = httpBinService.demonstrateExchangeWithError();
+                    System.out.println("Result: " + result);
+                });
+
+        runDemo(
+                "Exchange vs Retrieve Comparison",
+                () -> {
+                    httpBinService.compareExchangeVsRetrieve();
+                });
+
         System.out.println("\nDemo completed successfully!");
     }
 

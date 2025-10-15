@@ -52,6 +52,7 @@ public class HttpInterfaceService {
         }
 
         // Custom Argument Resolver - SearchQuery
+        System.out.println("\n5. Custom Argument Resolver Demo:");
         demonstrateCustomArgumentResolver();
     }
 
@@ -63,7 +64,6 @@ public class HttpInterfaceService {
      * -> order (asc/desc)
      */
     public void demonstrateCustomArgumentResolver() {
-        System.out.println("\n=== Custom Argument Resolver Demo ===");
 
         // Simple search with just a search term
         System.out.println("\n1. Simple search with SearchQuery:");
