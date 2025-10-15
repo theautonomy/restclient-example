@@ -9,8 +9,9 @@ import com.example.restclientdemo.service.HttpInterfaceService;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
-// @Component
+@Component
 public class DemoRunner implements CommandLineRunner {
 
     private final HttpBinService httpBinService;
@@ -183,10 +184,10 @@ public class DemoRunner implements CommandLineRunner {
         runDemo(
                 "Basic Authentication",
                 () -> {
-                    HttpBinResponse response = httpBinService.demonstrateBasicAuth();
+                    String response = httpBinService.demonstrateBasicAuth();
                     if (response != null) {
                         System.out.println("Authentication successful!");
-                        System.out.println("Response: " + response.getUrl());
+                        System.out.println("Response: " + response);
                     } else {
                         System.out.println("Authentication failed");
                     }
