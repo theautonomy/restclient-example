@@ -9,9 +9,8 @@ import com.example.restclientdemo.service.HttpInterfaceService;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 
-@Component
+// @Component // Disabled to run UserServiceDemoRunner instead
 public class DemoRunner implements CommandLineRunner {
 
     private final HttpBinService httpBinService;

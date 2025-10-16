@@ -20,6 +20,7 @@ public class RestClientConfig {
         return builder.baseUrl("https://httpbin.org")
                 .defaultHeader("User-Agent", "Spring-RestClient-Demo/1.0")
                 .defaultHeader("Accept", "application/json")
+                .defaultHeader("what", "whatever")
                 .requestInterceptor(loggingInterceptor())
                 .build();
     }
