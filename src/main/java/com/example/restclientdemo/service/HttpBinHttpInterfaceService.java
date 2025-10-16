@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 
 /** Service demonstrating HTTP Interface usage with declarative client methods. */
 @Service
-public class HttpInterfaceService {
+public class HttpBinHttpInterfaceService {
 
     private final HttpBinClient httpBinClient;
 
-    public HttpInterfaceService(HttpBinClient httpBinClient) {
+    public HttpBinHttpInterfaceService(HttpBinClient httpBinClient) {
         this.httpBinClient = httpBinClient;
     }
 

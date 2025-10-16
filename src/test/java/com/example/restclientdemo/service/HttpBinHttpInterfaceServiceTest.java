@@ -23,9 +23,9 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  * <p>These tests verify the declarative HTTP Interface client functionality with real HTTP calls to
  * httpbin.org.
  */
-class HttpInterfaceServiceTest {
+public class HttpBinHttpInterfaceServiceTest {
 
-    private HttpInterfaceService httpInterfaceService;
+    private HttpBinHttpInterfaceService httpInterfaceService;
     private HttpBinClient httpBinClient;
 
     @BeforeEach
@@ -43,7 +43,7 @@ class HttpInterfaceServiceTest {
         httpBinClient = factory.createClient(HttpBinClient.class);
 
         // Create service
-        httpInterfaceService = new HttpInterfaceService(httpBinClient);
+        httpInterfaceService = new HttpBinHttpInterfaceService(httpBinClient);
     }
 
     // HTTP Interface Basic Operations Tests

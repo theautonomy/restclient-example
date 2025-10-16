@@ -4,8 +4,8 @@ import java.util.Map;
 
 import com.example.restclientdemo.model.HttpBinResponse;
 import com.example.restclientdemo.service.ErrorHandlingService;
+import com.example.restclientdemo.service.HttpBinHttpInterfaceService;
 import com.example.restclientdemo.service.HttpBinService;
-import com.example.restclientdemo.service.HttpInterfaceService;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +14,12 @@ import org.springframework.http.ResponseEntity;
 public class DemoRunner implements CommandLineRunner {
 
     private final HttpBinService httpBinService;
-    private final HttpInterfaceService httpInterfaceService;
+    private final HttpBinHttpInterfaceService httpInterfaceService;
     private final ErrorHandlingService errorHandlingService;
 
     public DemoRunner(
             HttpBinService httpBinService,
-            HttpInterfaceService httpInterfaceService,
+            HttpBinHttpInterfaceService httpInterfaceService,
             ErrorHandlingService errorHandlingService) {
         this.httpBinService = httpBinService;
         this.httpInterfaceService = httpInterfaceService;

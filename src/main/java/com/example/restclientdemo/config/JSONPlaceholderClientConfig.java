@@ -15,7 +15,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
  * testing real HTTP operations.
  */
 @Configuration
-public class JSONPlaceholderConfig {
+public class JSONPlaceholderClientConfig {
 
     /**
      * RestClient configured for JSONPlaceholder API. Used by UserService for testing real API
