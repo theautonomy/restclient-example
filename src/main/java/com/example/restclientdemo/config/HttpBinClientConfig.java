@@ -5,6 +5,7 @@ import com.example.restclientdemo.handler.CustomResponseErrorHandler;
 import com.example.restclientdemo.resolver.SearchQueryArgumentResolver;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -15,9 +16,12 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @Configuration
 public class HttpBinClientConfig {
 
+    @Value("${app.httpbin.base-url}")
+    private String httpBinBaseUrl;
+
     @Bean
     public RestClient defaultRestClient(RestClient.Builder builder) {
-        return builder.baseUrl("https://httpbin.org")
+        return builder.baseUrl(httpBinBaseUrl)
                 .defaultHeader("User-Agent", "Spring-RestClient-Demo/1.0")
                 .defaultHeader("Accept", "application/json")
                 .defaultHeader("what", "whatever")
@@ -27,7 +31,7 @@ public class HttpBinClientConfig {
 
     @Bean
     public RestClient customRestClient(RestClient.Builder builder) {
-        return builder.baseUrl("https://httpbin.org")
+        return builder.baseUrl(httpBinBaseUrl)
                 .defaultHeader("Custom-Header", "Demo-Value")
                 .requestInterceptor(loggingInterceptor())
                 .build();
@@ -36,7 +40,7 @@ public class HttpBinClientConfig {
     /** RestClient configured with custom error handler. */
     @Bean
     public RestClient errorHandlingRestClient(RestClient.Builder builder) {
-        return builder.baseUrl("https://httpbin.org")
+        return builder.baseUrl(httpBinBaseUrl)
                 .defaultHeader("User-Agent", "Spring-RestClient-Demo/1.0")
                 .defaultHeader("Accept", "application/json")
                 .requestInterceptor(loggingInterceptor())

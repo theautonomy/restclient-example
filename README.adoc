@@ -120,6 +120,48 @@ public RestClient customRestClient(RestClient.Builder builder) {
 * Demonstrates multiple RestClient configurations
 * Custom headers specific to this client
 
+=== Application Properties (spring.http.client.*)
+
+Spring Boot 3.4+ supports HTTP client configuration via `application.properties`:
+
+[source,properties]
+----
+spring.http.client.factory=simple
+spring.http.client.connect-timeout=5000
+spring.http.client.read-timeout=10000
+----
+
+[cols="1,3"]
+|===
+|Property |Description
+
+|`spring.http.client.factory`
+|HTTP client factory: `simple`, `jdk`, `http-components`, `jetty`, `reactor`
+
+|`spring.http.client.connect-timeout`
+|Connection timeout (e.g., `5000` or `5s`)
+
+|`spring.http.client.read-timeout`
+|Read timeout (e.g., `10000` or `10s`)
+|===
+
+This application uses these properties via the auto-configured `RestClient.Builder` bean in link:src/main/java/com/example/restclientdemo/config/HttpBinClientConfig.java[HttpBinClientConfig.java]:
+
+[source,java]
+----
+@Bean
+public RestClient defaultRestClient(RestClient.Builder builder) {  // <1>
+    return builder.baseUrl("https://httpbin.org")
+            .defaultHeader("User-Agent", "Spring-RestClient-Demo/1.0")
+            .build();
+}
+----
+<1> The injected `RestClient.Builder` has `spring.http.client.*` properties applied
+
+IMPORTANT: These properties only apply when using the *auto-configured `RestClient.Builder` bean* (injected via parameter or `@Autowired`). They do *not* apply when calling `RestClient.builder()` directly (as done in some test classes).
+
+NOTE: Spring Boot 4.0 changes these properties to `spring.http.clients.*` (plural). See https://docs.spring.io/spring-boot/reference/io/rest-client.html[Spring Boot Reference Documentation].
+
 == Usage Examples
 
 === Basic GET Request

@@ -2,15 +2,16 @@ package com.example.restclientdemo.runner;
 
 import java.util.Map;
 
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+
 import com.example.restclientdemo.model.HttpBinResponse;
 import com.example.restclientdemo.service.ErrorHandlingService;
 import com.example.restclientdemo.service.HttpBinHttpInterfaceService;
 import com.example.restclientdemo.service.HttpBinService;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.http.ResponseEntity;
-
-// @Component // Disabled to run UserServiceDemoRunner instead
+@Component // Disabled to run UserServiceDemoRunner instead
 public class DemoRunner implements CommandLineRunner {
 
     private final HttpBinService httpBinService;
@@ -33,7 +34,7 @@ public class DemoRunner implements CommandLineRunner {
 
         // Regular RestClient Examples
         System.out.println("\nRestClient Examples");
-        runRestClientExamples();
+        // runRestClientExamples();
 
         // HTTP Interface Examples
         System.out.println("\nHTTP Interface Examples");
@@ -43,6 +44,7 @@ public class DemoRunner implements CommandLineRunner {
         System.out.println("\n" + "=".repeat(50));
         System.out.println("ResponseErrorHandler Examples");
         System.out.println("=".repeat(50));
+        /*
         runDemo(
                 "Error Handling with ResponseErrorHandler",
                 () -> {
@@ -54,6 +56,7 @@ public class DemoRunner implements CommandLineRunner {
                 () -> {
                     errorHandlingService.demonstrateErrorRecovery();
                 });
+                */
     }
 
     private void runRestClientExamples() {
@@ -235,7 +238,7 @@ public class DemoRunner implements CommandLineRunner {
             System.out.println(title);
             System.out.println("─".repeat(50));
             demo.run();
-            Thread.sleep(1000); // Small delay between requests to be nice to httpbin.org
+            Thread.sleep(1000); // Small delay between requests
         } catch (Exception e) {
             System.err.println("Error in " + title + ": " + e.getMessage());
         }

@@ -4,15 +4,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.example.restclientdemo.client.UserClient;
-import com.example.restclientdemo.model.User;
-import com.example.restclientdemo.service.UserService;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+
+import com.example.restclientdemo.client.UserClient;
+import com.example.restclientdemo.model.User;
+import com.example.restclientdemo.service.UserService;
 
 /**
  * Demo runner to test UserService with real JSONPlaceholder API.
@@ -20,7 +19,7 @@ import org.springframework.web.client.RestClient;
  * <p>This demonstrates all the code examples from spring-restclient-guide.adoc working with a real
  * API.
  */
-@Component
+// @Component
 public class UserServiceDemoRunner implements CommandLineRunner {
 
     private final UserService userService;

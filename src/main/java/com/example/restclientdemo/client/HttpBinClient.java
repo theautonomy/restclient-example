@@ -11,7 +11,7 @@ import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
-@HttpExchange("https://httpbin.org")
+@HttpExchange
 public interface HttpBinClient {
 
     @GetExchange("/get")
