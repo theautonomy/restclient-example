@@ -31,7 +31,7 @@ public class HttpBinHttpInterfaceServiceTest {
     @BeforeEach
     void setUp() {
         // Create RestClient for HttpBin
-        RestClient restClient = RestClient.builder().baseUrl("https://httpbin.org").build();
+        RestClient restClient = RestClient.builder().baseUrl("http://localhost:1080").build();
 
         // Create HTTP Interface proxy
 
@@ -99,7 +99,8 @@ public class HttpBinHttpInterfaceServiceTest {
         // When/Then - This will fail without proper auth headers
         // The test demonstrates the interface, actual auth requires proper configuration
         try {
-            HttpBinResponse response = httpBinClient.basicAuth();
+            HttpBinResponse response =
+                    httpBinClient.basicAuth("user", "passwd", "Basic dXNlcjpwYXNzd2Q=");
             // If it succeeds, verify response
             assertThat(response).isNotNull();
         } catch (Exception e) {

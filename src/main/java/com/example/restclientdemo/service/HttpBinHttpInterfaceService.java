@@ -42,10 +42,10 @@ public class HttpBinHttpInterfaceService {
         response = httpBinClient.post(user);
         System.out.println("Response: " + response);
 
-        // Basic Auth
+        // Basic Auth - "user:passwd" encoded in Base64 = "dXNlcjpwYXNzd2Q="
         System.out.println("\n4. Basic Auth:");
         try {
-            response = httpBinClient.basicAuth();
+            response = httpBinClient.basicAuth("user", "passwd", "Basic dXNlcjpwYXNzd2Q=");
             System.out.println("Response: " + response);
         } catch (Exception e) {
             System.out.println("Auth failed: " + e.getMessage());

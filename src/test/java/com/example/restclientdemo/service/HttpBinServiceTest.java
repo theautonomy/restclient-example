@@ -29,11 +29,11 @@ class HttpBinServiceTest {
     @BeforeEach
     void setUp() {
         // Create real RestClient instances for integration testing
-        defaultRestClient = RestClient.builder().baseUrl("https://httpbin.org").build();
+        defaultRestClient = RestClient.builder().baseUrl("http://localhost:1080").build();
 
         customRestClient =
                 RestClient.builder()
-                        .baseUrl("https://httpbin.org")
+                        .baseUrl("http://localhost:1080")
                         .defaultHeader("Custom-Header", "CustomValue")
                         .build();
 

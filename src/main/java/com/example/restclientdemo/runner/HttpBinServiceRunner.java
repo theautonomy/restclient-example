@@ -12,13 +12,13 @@ import com.example.restclientdemo.service.HttpBinHttpInterfaceService;
 import com.example.restclientdemo.service.HttpBinService;
 
 @Component // Disabled to run UserServiceDemoRunner instead
-public class DemoRunner implements CommandLineRunner {
+public class HttpBinServiceRunner implements CommandLineRunner {
 
     private final HttpBinService httpBinService;
     private final HttpBinHttpInterfaceService httpInterfaceService;
     private final ErrorHandlingService errorHandlingService;
 
-    public DemoRunner(
+    public HttpBinServiceRunner(
             HttpBinService httpBinService,
             HttpBinHttpInterfaceService httpInterfaceService,
             ErrorHandlingService errorHandlingService) {
@@ -34,7 +34,7 @@ public class DemoRunner implements CommandLineRunner {
 
         // Regular RestClient Examples
         System.out.println("\nRestClient Examples");
-        // runRestClientExamples();
+        runRestClientExamples();
 
         // HTTP Interface Examples
         System.out.println("\nHTTP Interface Examples");
@@ -44,7 +44,6 @@ public class DemoRunner implements CommandLineRunner {
         System.out.println("\n" + "=".repeat(50));
         System.out.println("ResponseErrorHandler Examples");
         System.out.println("=".repeat(50));
-        /*
         runDemo(
                 "Error Handling with ResponseErrorHandler",
                 () -> {
@@ -56,7 +55,6 @@ public class DemoRunner implements CommandLineRunner {
                 () -> {
                     errorHandlingService.demonstrateErrorRecovery();
                 });
-                */
     }
 
     private void runRestClientExamples() {

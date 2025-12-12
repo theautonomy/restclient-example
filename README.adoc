@@ -25,36 +25,9 @@ A comprehensive demonstration application showcasing Spring Boot's `RestClient` 
 == Technology Stack
 
 * *Spring Boot*: 3.5.3
-* *Java*: 17
+* *Java*: 21
 * *Build Tool*: Maven
-* *Test API*: https://httpbin.org (for HTTP request/response testing)
-
-== Project Structure
-
-[source]
-----
-restclient-explained/
-├── src/main/java/com/example/restclientdemo/
-│   ├── RestClientDemoApplication.java          # Main application entry point
-│   ├── config/
-│   │   └── RestClientConfig.java               # RestClient bean configuration
-│   ├── client/
-│   │   └── HttpBinClient.java                  # Declarative HTTP Interface
-│   ├── service/
-│   │   ├── HttpBinService.java                 # RestClient usage examples
-│   │   └── HttpInterfaceService.java           # HTTP Interface usage examples
-│   ├── runner/
-│   │   └── DemoRunner.java                     # CommandLineRunner for demonstrations
-│   └── model/
-│       ├── HttpBinResponse.java                # Response model
-│       └── User.java                           # User model for requests
-├── src/test/java/
-│   └── com/example/restclientdemo/
-│       ├── implementation/                     # RestClient implementation examples
-│       ├── RestClientExample.java              # Basic examples
-│       └── MoreRestClientExamples.java         # Advanced examples
-└── pom.xml
-----
+* *Test API*: http://localhost:1080 (for HTTP request/response testing)
 
 == Getting Started
 
@@ -67,6 +40,9 @@ restclient-explained/
 
 [source,bash]
 ----
+# Start local httpbin service in docker:
+docker run -p 1080:80 kennethreitz/httpbin
+
 # Clone the repository
 git clone <repository-url>
 cd restclient-explained
@@ -91,7 +67,7 @@ The application configures two `RestClient` beans in link:src/main/java/com/exam
 @Bean
 public RestClient defaultRestClient(RestClient.Builder builder) {
     return builder
-            .baseUrl("https://httpbin.org")
+            .baseUrl("http://localhost:1080")
             .defaultHeader("User-Agent", "Spring-RestClient-Demo/1.0")
             .defaultHeader("Accept", "application/json")
             .requestInterceptor(loggingInterceptor())
@@ -99,7 +75,7 @@ public RestClient defaultRestClient(RestClient.Builder builder) {
 }
 ----
 
-* Base URL set to `https://httpbin.org`
+* Base URL set to `http://localhost:1080`
 * Default headers for User-Agent and Accept
 * Request/response logging interceptor
 
@@ -110,7 +86,7 @@ public RestClient defaultRestClient(RestClient.Builder builder) {
 @Bean
 public RestClient customRestClient(RestClient.Builder builder) {
     return builder
-            .baseUrl("https://httpbin.org")
+            .baseUrl("http://localhost:1080")
             .defaultHeader("Custom-Header", "Demo-Value")
             .requestInterceptor(loggingInterceptor())
             .build();
@@ -151,7 +127,7 @@ This application uses these properties via the auto-configured `RestClient.Build
 ----
 @Bean
 public RestClient defaultRestClient(RestClient.Builder builder) {  // <1>
-    return builder.baseUrl("https://httpbin.org")
+    return builder.baseUrl("http://localhost:1080")
             .defaultHeader("User-Agent", "Spring-RestClient-Demo/1.0")
             .build();
 }
@@ -297,7 +273,7 @@ The link:src/main/java/com/example/restclientdemo/client/HttpBinClient.java[Http
 
 [source,java]
 ----
-@HttpExchange("https://httpbin.org")
+@HttpExchange("http://localhost:1080")
 public interface HttpBinClient {
 
     @GetExchange("/get")
@@ -334,7 +310,7 @@ Example output:
 
 [source]
 ----
-🚀 Making request to: GET https://httpbin.org/get
+🚀 Making request to: GET http://localhost:1080/get
 📤 Headers: [User-Agent:"Spring-RestClient-Demo/1.0", Accept:"application/json"]
 📥 Response Status: 200 OK
 📋 Response Headers: [Content-Type:"application/json"]
@@ -442,7 +418,7 @@ mvn test
 
 * https://docs.spring.io/spring-framework/reference/integration/rest-clients.html[Spring RestClient Documentation]
 * https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-http-interface[HTTP Interface Documentation]
-* https://httpbin.org/[httpbin.org API Documentation]
+* http://localhost:1080/[httpbin.org API Documentation]
 * https://spring.io/blog/2023/07/13/new-in-spring-6-1-restclient[Spring Blog: RestClient Introduction]
 
 == Reference

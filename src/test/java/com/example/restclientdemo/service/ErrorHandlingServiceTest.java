@@ -29,12 +29,12 @@ class ErrorHandlingServiceTest {
         // Create RestClient with custom error handler
         errorHandlingRestClient =
                 RestClient.builder()
-                        .baseUrl("https://httpbin.org")
+                        .baseUrl("http://localhost:1080")
                         .defaultStatusHandler(new CustomResponseErrorHandler())
                         .build();
 
         // Create default RestClient without custom error handler
-        defaultRestClient = RestClient.builder().baseUrl("https://httpbin.org").build();
+        defaultRestClient = RestClient.builder().baseUrl("http://localhost:1080").build();
 
         // Create service
         errorHandlingService = new ErrorHandlingService(errorHandlingRestClient, defaultRestClient);

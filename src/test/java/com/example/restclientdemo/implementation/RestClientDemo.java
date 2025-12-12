@@ -12,7 +12,7 @@ public class RestClientDemo {
         // Create RestClient with httpbin.org base URL
         RestClient client =
                 RestClient.builder()
-                        .baseUrl("https://httpbin.org")
+                        .baseUrl("http://localhost:1080")
                         .defaultHeader("User-Agent", "RestClient-Demo/1.0")
                         .defaultHeader("Accept", "application/json")
                         .build();
