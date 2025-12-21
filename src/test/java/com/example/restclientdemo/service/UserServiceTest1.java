@@ -14,18 +14,17 @@ import org.springframework.web.client.RestClient;
 /**
  * UserService test using @SpringBootTest to load Spring context.
  *
- * <p>This approach picks up Jackson 3 configuration automatically via:
+ * <p>This approach picks up Jackson 2 configuration automatically via:
  *
  * <ul>
- *   <li>application.properties: spring.http.converters.preferred-json-mapper=jackson
- *   <li>Jackson3Config bean that provides customized JsonMapper
+ *   <li>application.properties: spring.http.converters.preferred-json-mapper=jackson2
  * </ul>
  *
- * <p>The auto-configured RestClient.Builder will use Jackson 3 message converters with
+ * <p>The auto-configured RestClient.Builder will use Jackson 2 message converters with
  * FAIL_ON_NULL_FOR_PRIMITIVES disabled to handle null → primitive mapping.
  */
 @SpringBootTest
-@DisplayName("UserService Test with @SpringBootTest (Jackson 3 via Spring Context)")
+@DisplayName("UserService Test with @SpringBootTest (Jackson 2 via Spring Context)")
 class UserServiceTest1 {
 
     @Autowired private RestClient.Builder restClientBuilder;
@@ -49,7 +48,7 @@ class UserServiceTest1 {
         assertThat(result.getName()).isEqualTo("Leanne Graham");
         assertThat(result.getEmail()).isEqualTo("Sincere@april.biz");
         // age is 0 (primitive default) because JSONPlaceholder doesn't return it
-        // Jackson 3 with FAIL_ON_NULL_FOR_PRIMITIVES disabled maps null to 0
+        // Jackson 2 with FAIL_ON_NULL_FOR_PRIMITIVES disabled maps null to 0
         assertThat(result.getAge()).isEqualTo(0);
     }
 
