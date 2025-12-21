@@ -235,8 +235,8 @@ public class HttpBinService {
                             System.out.println("Inside exchange handler:");
                             System.out.println("  Request URI: " + request.getURI());
                             System.out.println("  Response Status: " + response.getStatusCode());
-                            System.out.println(
-                                    "  Response Headers: " + response.getHeaders().keySet());
+                            // System.out.println("  Response Headers: " +
+                            // response.getHeaders().keySet());
 
                             // Manual error handling - status handlers are NOT automatically
                             // applied

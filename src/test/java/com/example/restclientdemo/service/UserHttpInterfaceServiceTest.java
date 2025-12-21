@@ -10,19 +10,45 @@ import com.example.restclientdemo.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
-@DisplayName("UserHttpInterfaceService Integration Tests with JSONPlaceholder")
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.json.JsonMapper;
+
+/**
+ * UserHttpInterfaceService Integration Tests with JSONPlaceholder using Jackson 3.
+ *
+ * <p>This test manually configures RestClient with Jackson 3 (tools.jackson package) and disables
+ * FAIL_ON_NULL_FOR_PRIMITIVES to handle null → primitive mapping.
+ */
+@DisplayName("UserHttpInterfaceService Integration Tests with JSONPlaceholder (Jackson 3)")
 class UserHttpInterfaceServiceTest {
 
     private UserHttpInterfaceService service;
 
     @BeforeEach
     void setUp() {
+        // Create Jackson 3 JsonMapper with custom configuration
+        JsonMapper jsonMapper =
+                JsonMapper.builder()
+                        .disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
+                        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                        .build();
+
+        // Build RestClient with custom Jackson 3 converter
         RestClient restClient =
-                RestClient.builder().baseUrl("https://jsonplaceholder.typicode.com").build();
+                RestClient.builder()
+                        .baseUrl("https://jsonplaceholder.typicode.com")
+                        .configureMessageConverters(
+                                builder ->
+                                        builder.registerDefaults()
+                                                .withJsonConverter(
+                                                        new JacksonJsonHttpMessageConverter(
+                                                                jsonMapper)))
+                        .build();
 
         HttpServiceProxyFactory factory =
                 HttpServiceProxyFactory.builderFor(RestClientAdapter.create(restClient)).build();

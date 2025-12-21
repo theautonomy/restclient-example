@@ -2,14 +2,14 @@ package com.example.restclientdemo.runner;
 
 import java.util.Map;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
-
 import com.example.restclientdemo.model.HttpBinResponse;
 import com.example.restclientdemo.service.ErrorHandlingService;
 import com.example.restclientdemo.service.HttpBinHttpInterfaceService;
 import com.example.restclientdemo.service.HttpBinService;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 @Component // Disabled to run UserServiceDemoRunner instead
 public class HttpBinServiceRunner implements CommandLineRunner {

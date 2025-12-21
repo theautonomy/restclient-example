@@ -16,7 +16,7 @@ public class User {
     private String email;
     private String phone; // JSONPlaceholder field
     private String website; // JSONPlaceholder field
-    private Integer age; // Our custom field (not in JSONPlaceholder)
+    private int age; // Our custom field (not in JSONPlaceholder) - primitive for Jackson 3 demo
 
     public User() {}
 
@@ -74,11 +74,11 @@ public class User {
         this.website = website;
     }
 
-    public Integer getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public void setAge(int age) {
         this.age = age;
     }
 

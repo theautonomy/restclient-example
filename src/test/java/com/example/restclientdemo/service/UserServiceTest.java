@@ -14,17 +14,44 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.web.client.RestClient;
 
-@DisplayName("UserService Integration Tests with JSONPlaceholder")
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.json.JsonMapper;
+
+/**
+ * UserService Integration Tests with JSONPlaceholder using Jackson 3.
+ *
+ * <p>This test configures the JsonMapper with FAIL_ON_NULL_FOR_PRIMITIVES disabled using the
+ * configureMessageConverters API with withJsonConverter().
+ */
+@DisplayName("UserService Integration Tests with JSONPlaceholder (Jackson 3)")
 class UserServiceTest {
 
     private UserService userService;
 
     @BeforeEach
     void setUp() {
+        // Create Jackson 3 JsonMapper with custom configuration
+        JsonMapper jsonMapper =
+                JsonMapper.builder()
+                        .disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
+                        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                        .build();
+
+        // Build RestClient with custom Jackson 3 converter
         RestClient restClient =
-                RestClient.builder().baseUrl("https://jsonplaceholder.typicode.com").build();
+                RestClient.builder()
+                        .baseUrl("https://jsonplaceholder.typicode.com")
+                        .configureMessageConverters(
+                                builder ->
+                                        builder.registerDefaults()
+                                                .withJsonConverter(
+                                                        new JacksonJsonHttpMessageConverter(
+                                                                jsonMapper)))
+                        .build();
+
         userService = new UserService(restClient);
     }
 
