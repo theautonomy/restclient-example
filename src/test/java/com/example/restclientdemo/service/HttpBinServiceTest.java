@@ -5,13 +5,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Map;
 
 import com.example.restclientdemo.model.HttpBinResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClient;
+
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Unit tests for HttpBinService.
@@ -24,7 +25,7 @@ class HttpBinServiceTest {
     private HttpBinService httpBinService;
     private RestClient defaultRestClient;
     private RestClient customRestClient;
-    private ObjectMapper objectMapper;
+    private JsonMapper objectMapper;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +38,7 @@ class HttpBinServiceTest {
                         .defaultHeader("Custom-Header", "CustomValue")
                         .build();
 
-        objectMapper = new ObjectMapper();
+        objectMapper = new JsonMapper();
 
         httpBinService = new HttpBinService(defaultRestClient, customRestClient, objectMapper);
     }

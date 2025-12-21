@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.example.restclientdemo.model.HttpBinResponse;
 import com.example.restclientdemo.model.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
@@ -16,17 +15,19 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
 
+import tools.jackson.databind.json.JsonMapper;
+
 @Service
 public class HttpBinService {
 
     private final RestClient defaultRestClient;
     private final RestClient customRestClient;
-    private final ObjectMapper objectMapper;
+    private final JsonMapper objectMapper;
 
     public HttpBinService(
             @Qualifier("defaultRestClient") RestClient defaultRestClient,
             @Qualifier("customRestClient") RestClient customRestClient,
-            ObjectMapper objectMapper) {
+            JsonMapper objectMapper) {
         this.defaultRestClient = defaultRestClient;
         this.customRestClient = customRestClient;
         this.objectMapper = objectMapper;
