@@ -1,0 +1,99 @@
+======================================================================
+Spring Beans (filtered by package/type)
+======================================================================
+
+--- Application Beans (com.example.*) ---
+
+  JSONPlaceholderClientConfig              -> com.example.restclientdemo.config.JSONPlaceholderClientConfig$$SpringCGLIB$$0
+  beanInfo                                 -> com.example.restclientdemo.util.BeanInfo
+  errorHandlingService                     -> com.example.restclientdemo.service.ErrorHandlingService
+  httpBinClientConfig                      -> com.example.restclientdemo.config.HttpBinClientConfig$$SpringCGLIB$$0
+  httpBinHttpInterfaceService              -> com.example.restclientdemo.service.HttpBinHttpInterfaceService
+  httpBinService                           -> com.example.restclientdemo.service.HttpBinService
+  httpBinServiceRunner                     -> com.example.restclientdemo.runner.HttpBinServiceRunner
+  messageConverterInfo                     -> com.example.restclientdemo.util.MessageConverterInfo
+  restClientDemoApplication                -> com.example.restclientdemo.RestClientDemoApplication
+
+  Total: 9 beans
+
+--- Jackson Beans ---
+
+  jackson2HttpMessageConvertersCustomizer  -> org.springframework.boot.http.converter.autoconfigure.Jackson2HttpMessageConvertersConfiguration$Jackson2JsonMessageConvertersCustomizer
+  jackson2JsonComponentModule              -> org.springframework.boot.jackson2.JsonComponentModule
+  jackson2JsonMixinModule                  -> org.springframework.boot.jackson2.JsonMixinModule
+  jackson2JsonMixinModuleEntries           -> org.springframework.boot.jackson2.JsonMixinModuleEntries
+  jackson2ObjectMapper                     -> com.fasterxml.jackson.databind.ObjectMapper
+  jackson2ObjectMapperBuilder              -> org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
+  jackson2ParameterNamesModule             -> com.fasterxml.jackson.module.paramnames.ParameterNamesModule
+  jacksonJsonMapper                        -> tools.jackson.databind.json.JsonMapper
+  jacksonMixinModule                       -> org.springframework.boot.jackson.JacksonMixinModule
+  jacksonMixinModuleEntries                -> org.springframework.boot.jackson.JacksonMixinModuleEntries
+  jsonMapperBuilder                        -> tools.jackson.databind.json.JsonMapper$Builder
+  org.springframework.boot.http.converter.autoconfigure.Jackson2HttpMessageConvertersConfiguration -> org.springframework.boot.http.converter.autoconfigure.Jackson2HttpMessageConvertersConfiguration
+  org.springframework.boot.http.converter.autoconfigure.Jackson2HttpMessageConvertersConfiguration$MappingJackson2HttpMessageConverterConfiguration -> org.springframework.boot.http.converter.autoconfigure.Jackson2HttpMessageConvertersConfiguration$MappingJackson2HttpMessageConverterConfiguration
+  org.springframework.boot.http.converter.autoconfigure.JacksonHttpMessageConvertersConfiguration -> org.springframework.boot.http.converter.autoconfigure.JacksonHttpMessageConvertersConfiguration
+  org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration -> org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration
+  org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration$JacksonJsonMapperBuilderCustomizerConfiguration -> org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration$JacksonJsonMapperBuilderCustomizerConfiguration 
+  org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration$JacksonMixinConfiguration -> org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration$JacksonMixinConfiguration
+  org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration$JsonProblemDetailsConfiguration -> org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration$JsonProblemDetailsConfiguration
+  org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration -> org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration
+  org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration$Jackson2ObjectMapperBuilderCustomizerConfiguration -> org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration$Jackson2ObjectMapperBuilderCustomizerConfiguration
+  org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration$JacksonMixinConfiguration -> org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration$JacksonMixinConfiguration
+  org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration$JacksonObjectMapperBuilderConfiguration -> org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration$JacksonObjectMapperBuilderConfiguration
+  org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration$JacksonObjectMapperConfiguration -> org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration$JacksonObjectMapperConfiguration
+  org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration$ParameterNamesModuleConfiguration -> org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration$ParameterNamesModuleConfiguration
+  problemDetailJsonMapperBuilderCustomizer -> org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration$JsonProblemDetailsConfiguration$ProblemDetailJsonMapperBuilderCustomizer
+  spring.jackson-org.springframework.boot.jackson.autoconfigure.JacksonProperties -> org.springframework.boot.jackson.autoconfigure.JacksonProperties
+  spring.jackson2-org.springframework.boot.jackson2.autoconfigure.Jackson2Properties -> org.springframework.boot.jackson2.autoconfigure.Jackson2Properties
+  standardJackson2ObjectMapperBuilderCustomizer -> org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration$Jackson2ObjectMapperBuilderCustomizerConfiguration$StandardJackson2ObjectMapperBuilderCustomizer
+  standardJsonMapperBuilderCustomizer      -> org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration$JacksonJsonMapperBuilderCustomizerConfiguration$StandardJsonMapperBuilderCustomizer
+
+  Total: 29 beans
+
+--- RestClient Beans ---
+
+  customRestClient                         -> org.springframework.web.client.DefaultRestClient
+  defaultRestClient                        -> org.springframework.web.client.DefaultRestClient
+  errorHandlingRestClient                  -> org.springframework.web.client.DefaultRestClient
+  httpClientSettings                       -> org.springframework.boot.http.client.HttpClientSettings
+  httpMessageConvertersRestClientCustomizer -> org.springframework.boot.restclient.autoconfigure.HttpMessageConvertersRestClientCustomizer
+  jsonPlaceholderRestClient                -> org.springframework.web.client.DefaultRestClient
+  org.springframework.boot.http.client.autoconfigure.HttpClientAutoConfiguration -> org.springframework.boot.http.client.autoconfigure.HttpClientAutoConfiguration
+  org.springframework.boot.http.client.autoconfigure.imperative.ImperativeHttpClientAutoConfiguration -> org.springframework.boot.http.client.autoconfigure.imperative.ImperativeHttpClientAutoConfiguration
+  org.springframework.boot.restclient.autoconfigure.RestClientAutoConfiguration -> org.springframework.boot.restclient.autoconfigure.RestClientAutoConfiguration
+  org.springframework.boot.restclient.autoconfigure.RestClientAutoConfiguration$HttpMessageConvertersConfiguration -> org.springframework.boot.restclient.autoconfigure.RestClientAutoConfiguration$HttpMessageConvertersConfiguration
+  org.springframework.boot.restclient.autoconfigure.RestTemplateAutoConfiguration -> org.springframework.boot.restclient.autoconfigure.RestTemplateAutoConfiguration
+  restClientBuilder                        -> org.springframework.web.client.DefaultRestClientBuilder
+  restClientBuilderConfigurer              -> org.springframework.boot.restclient.autoconfigure.RestClientBuilderConfigurer
+  restClientDemoApplication                -> com.example.restclientdemo.RestClientDemoApplication
+  restClientSsl                            -> org.springframework.boot.restclient.autoconfigure.AutoConfiguredRestClientSsl
+  spring.http.clients-org.springframework.boot.http.client.autoconfigure.HttpClientsProperties -> org.springframework.boot.http.client.autoconfigure.HttpClientsProperties
+  spring.http.clients.imperative-org.springframework.boot.http.client.autoconfigure.imperative.ImperativeHttpClientsProperties -> org.springframework.boot.http.client.autoconfigure.imperative.ImperativeHttpClientsProperties
+
+  Total: 17 beans
+
+--- Summary ---
+
+  Total beans in context: 116
+
+======================================================================
+
+
+NOTE
+================= 
+The output shows interesting findings:
+
+  Jackson Beans (29 total):
+  - jackson2ObjectMapper → com.fasterxml.jackson.databind.ObjectMapper (Jackson 2)
+  - jacksonJsonMapper → tools.jackson.databind.json.JsonMapper (Jackson 3)
+
+  Both Jackson 2 and Jackson 3 are loaded, but the spring.http.converters.preferred-json-mapper=jackson2 property tells Spring to use Jackson 2's MappingJackson2HttpMessageConverter for HTTP message conversion.
+
+  RestClient Beans:
+  - customRestClient → DefaultRestClient
+  - defaultRestClient → DefaultRestClient
+  - errorHandlingRestClient → DefaultRestClient
+  - jsonPlaceholderRestClient → DefaultRestClient
+
+  Application Beans (9 total):
+  - Config classes, services, runners, and utilities

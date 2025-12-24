@@ -1,0 +1,22 @@
+============================================================
+HTTP Message Converters (from auto-configured RestClient.Builder)
+============================================================
+
+ 1. ByteArrayHttpMessageConverter                 [Binary]
+      - application/octet-stream
+      - */*
+ 2. StringHttpMessageConverter                    [String/Text]
+      - text/plain
+      - */*
+ 3. ResourceHttpMessageConverter                  [Resource]
+      - */*
+ 4. AllEncompassingFormHttpMessageConverter       [Form Data]
+      - application/x-www-form-urlencoded
+      - multipart/form-data
+      - multipart/mixed
+      - multipart/related
+ 5. MappingJackson2HttpMessageConverter           [Jackson 2 - com.fasterxml.jackson]
+      - application/json
+      - application/*+json
+
+============================================================
